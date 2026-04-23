@@ -7,6 +7,16 @@ export interface Quote {
   role: string;
 }
 
+export async function fetchQuoteById(id: number): Promise<Quote | null> {
+  const { data, error } = await supabase
+    .from("quotes")
+    .select("id, text, author, role")
+    .eq("id", id)
+    .single();
+  if (error || !data) return null;
+  return data;
+}
+
 export async function fetchQuotes(): Promise<Quote[]> {
   const { data, error } = await supabase
     .from("quotes")

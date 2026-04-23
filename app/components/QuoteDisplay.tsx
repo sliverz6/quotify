@@ -7,9 +7,10 @@ interface Props {
   initialQuote: Quote;
   initialIndex: number;
   quotes: Quote[];
+  dateLabel: string;
 }
 
-export default function QuoteDisplay({ initialQuote, initialIndex, quotes }: Props) {
+export default function QuoteDisplay({ initialQuote, initialIndex, quotes, dateLabel }: Props) {
   const [quote, setQuote] = useState(initialQuote);
   const [index, setIndex] = useState(initialIndex);
   const [spinning, setSpinning] = useState(false);
@@ -26,87 +27,59 @@ export default function QuoteDisplay({ initialQuote, initialIndex, quotes }: Pro
     setTimeout(() => setSpinning(false), 500);
   }
 
-  const idxStr = String(index + 1).padStart(2, "0");
-
   return (
-    <>
-      <main className="main-area">
-        <div className="stage">
-          <div className="eyebrow">
-            <span className="line" aria-hidden="true" />
-            <span>Quote of the Day</span>
-            <span className="kr">· 오늘의 명언</span>
-          </div>
+    <main className="main-area">
+      <div className="stage">
+        {/* ── Hero header ── */}
+        <div className="hero-header">
+          <p className="hero-date">{dateLabel}</p>
+          <h1 className="hero-title">오늘, 당신의 문장은.</h1>
+          <p className="hero-sub">큐레이션된 한 문장으로 하루를 시작하세요.</p>
+        </div>
 
-          <div className="quote-block">
-            <blockquote className="quote-text">
-              <span className="mark" aria-hidden="true">&ldquo;</span>
-              {quote.text}
-            </blockquote>
-
-            <div className="byline">
-              <span className="rule" aria-hidden="true" />
-              <div className="who">
-                <span className="author">{quote.author}</span>
-                <span className="role">{quote.role}</span>
-              </div>
+        {/* ── Quote card ── */}
+        <div key={index} className="quote-card">
+          <span className="card-mark" aria-hidden="true">&ldquo;</span>
+          <blockquote className="quote-text">{quote.text}</blockquote>
+          <div className="gold-rule" aria-hidden="true" />
+          <div className="byline">
+            <div className="who">
+              <span className="author">{quote.author}</span>
+              <span className="role">{quote.role}</span>
             </div>
           </div>
         </div>
-      </main>
 
-      <footer className="footer-area">
-        <div className="count">
-          <span className="idx">{idxStr}</span>
-          <span className="of">of {quotes.length} · 오늘의 선택</span>
-        </div>
-
-        <div className="progress" aria-hidden="true">
-          {quotes.map((_, k) => (
-            <span
-              key={k}
-              className={`bar ${k === index ? "bar-now" : k < index ? "bar-on" : ""}`}
-            />
-          ))}
-        </div>
-
-        <div className="footer-right">
-          <button
-            className={`regen-btn${spinning ? " regen-btn--spinning" : ""}`}
-            onClick={regenerate}
-            aria-label="다른 명언 보기"
+        {/* ── Regenerate button ── */}
+        <button
+          className={`btn regen-btn${spinning ? " regen-btn--spinning" : ""}`}
+          onClick={regenerate}
+          aria-label="다른 명언 보기"
+        >
+          <svg
+            className="regen-icon"
+            width="16"
+            height="16"
+            viewBox="0 0 16 16"
+            fill="none"
+            aria-hidden="true"
           >
-            <svg
-              className="regen-icon"
-              width="14"
-              height="14"
-              viewBox="0 0 16 16"
-              fill="none"
-              aria-hidden="true"
-            >
-              <path
-                d="M13.5 8a5.5 5.5 0 1 1-1.03-3.2"
-                stroke="currentColor"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-              />
-              <path
-                d="M11 3.5 13.5 4.8 12.2 7.3"
-                stroke="currentColor"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-            다른 명언
-          </button>
-
-          <div className="colophon">
-            Quotify v0.1
-            <span className="kr">읽기 전용 · 정적 배포</span>
-          </div>
-        </div>
-      </footer>
-    </>
+            <path
+              d="M13.5 8a5.5 5.5 0 1 1-1.03-3.2"
+              stroke="currentColor"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+            />
+            <path
+              d="M11 3.5 13.5 4.8 12.2 7.3"
+              stroke="currentColor"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+        </button>
+      </div>
+    </main>
   );
 }
