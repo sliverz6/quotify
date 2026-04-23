@@ -1,14 +1,15 @@
 "use client";
 
 import { useState } from "react";
-import { quotes, type Quote } from "@/lib/quotes";
+import { type Quote } from "@/lib/quotes";
 
 interface Props {
   initialQuote: Quote;
   initialIndex: number;
+  quotes: Quote[];
 }
 
-export default function QuoteDisplay({ initialQuote, initialIndex }: Props) {
+export default function QuoteDisplay({ initialQuote, initialIndex, quotes }: Props) {
   const [quote, setQuote] = useState(initialQuote);
   const [index, setIndex] = useState(initialIndex);
   const [spinning, setSpinning] = useState(false);

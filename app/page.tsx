@@ -1,11 +1,12 @@
-import { getTodaysQuote, weekOfYear } from "@/lib/quotes";
+import { fetchQuotes, getTodaysQuote, weekOfYear } from "@/lib/quotes";
 import QuoteDisplay from "@/app/components/QuoteDisplay";
 
 const WEEKDAY_KR = ["일요일", "월요일", "화요일", "수요일", "목요일", "금요일", "토요일"];
 const MONTH_EN = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
 
-export default function Home() {
-  const { quote, index } = getTodaysQuote();
+export default async function Home() {
+  const quotes = await fetchQuotes();
+  const { quote, index } = getTodaysQuote(quotes);
   const now = new Date();
 
   const weekday = WEEKDAY_KR[now.getDay()];
@@ -28,7 +29,7 @@ export default function Home() {
         </div>
       </header>
 
-      <QuoteDisplay initialQuote={quote} initialIndex={index} />
+      <QuoteDisplay initialQuote={quote} initialIndex={index} quotes={quotes} />
     </>
   );
 }
